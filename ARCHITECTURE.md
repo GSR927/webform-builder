@@ -105,6 +105,10 @@ anonymous, bursty, and must never silently drop data.
 ```sql
 tenants(id, name, plan, created_at)
 
+users(id, tenant_id, name, email, password_hash, created_at)
+
+auth_sessions(token_hash, user_id, tenant_id, csrf_hash, expires_at, created_at)
+
 forms(
   id, tenant_id, name, status ENUM('draft','published','archived'),
   draft_schema_json JSON,
@@ -124,6 +128,7 @@ submissions_inbox(              -- emergency fallback path only
 ```
 
 `schema_json` shape (per field):
+
 ```json
 {
   "key": "email",
@@ -131,8 +136,8 @@ submissions_inbox(              -- emergency fallback path only
   "label": "Work email",
   "required": true,
   "help_text": "We'll never spam you",
-  "validators": {"maxLength": 120},
-  "showIf": {"field": "role", "equals": "marketer"}
+  "validators": { "maxLength": 120 },
+  "showIf": { "field": "role", "equals": "marketer" }
 }
 ```
 
